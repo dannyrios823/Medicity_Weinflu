@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reto_weinflu/design/colors.dart';
 import 'package:reto_weinflu/design/copys.dart';
 import 'package:reto_weinflu/utils/color_provider.dart';
+import 'package:reto_weinflu/utils/error_dialog.dart';
 import 'package:reto_weinflu/utils/validate_helper.dart';
 import 'package:reto_weinflu/utils/list_medicines.dart';
 import 'package:reto_weinflu/utils/persons.dart';
@@ -39,6 +40,10 @@ class _FormMedicineState extends State<FormMedicine> {
   }
   
   void validate() {
+    if (personsLst.any((person) => person.medicina == medicinas && person.timer == pickerTime)) {
+    ErrorDialog.showErrorDialog(context, RetoCopys.errorDuplicate);
+    return;
+  }
     FormValidationHelper.validateAndHandleErrors(
       context: context,
       medicinas: medicinas,

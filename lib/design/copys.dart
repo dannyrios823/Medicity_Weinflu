@@ -8,6 +8,7 @@ class RetoCopys {
   static const String titleDelete = 'Eliminar';
   static const String errorMedicine = 'Debes seleccionar una medicina';
   static const String errorHour = 'Debes seleccionar la hora';
+  static const String errorDuplicate = 'Ya existe este registro';
   static const String emptyHour = '--:--';
   static const String titlePopUp = 'Error';
   static const String buttonPopUp = 'Aceptar';
