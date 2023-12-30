@@ -27,11 +27,8 @@ class _TimePickerMedicineState extends State<TimePickerMedicine>{
           const Text(RetoCopys.hourMedicine, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              foregroundColor: ColorsMedicine.blackColor,
+              foregroundColor: ColorsMedicine.whiteColor,
               backgroundColor: selectedColor,
-              side: const BorderSide(
-                width: 1.0,
-              ), 
             ),
             child: Text(
               widget.buttonController.value.isEmpty ? RetoCopys.emptyHour : widget.buttonController.value,

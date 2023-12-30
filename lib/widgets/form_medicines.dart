@@ -8,6 +8,7 @@ import 'package:reto_weinflu/utils/list_medicines.dart';
 import 'package:reto_weinflu/utils/persons.dart';
 import 'package:reto_weinflu/widgets/data_table.dart';
 import 'package:reto_weinflu/widgets/time_picker_medicine.dart';
+import 'package:reto_weinflu/widgets/rotating_square.dart';
 
 class FormMedicine extends StatefulWidget {
   final MaterialColor selectedColor;
@@ -18,7 +19,7 @@ class FormMedicine extends StatefulWidget {
   State<FormMedicine> createState() => _FormMedicineState();
 }
 
-class _FormMedicineState extends State<FormMedicine> {
+class _FormMedicineState extends State<FormMedicine> with SingleTickerProviderStateMixin {
   List<Persons> personsLst = <Persons>[];
   final formKey = GlobalKey<FormState>();
   String medicinas = '';
@@ -26,12 +27,19 @@ class _FormMedicineState extends State<FormMedicine> {
   TimeOfDay selectedTime = TimeOfDay.now();
   String selectedDropdownValue = ListMocks.listaDeOpciones.first;
   final ValueNotifier<String> timePickerButtonController = ValueNotifier<String>(RetoCopys.emptyHour);
+  late AnimationController _controller;
+  late Animation<double> _rotationAnimation;
 
   @override
   void initState() {
     super.initState();
     medicinas = '';
     pickerTime = '';
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    _rotationAnimation = Tween<double>(begin: 0.0, end: 2 * 3.1415).animate(_controller);
   }
   
   void refreshList() {
@@ -41,9 +49,9 @@ class _FormMedicineState extends State<FormMedicine> {
   
   void validate() {
     if (personsLst.any((person) => person.medicina == medicinas && person.timer == pickerTime)) {
-    ErrorDialog.showErrorDialog(context, RetoCopys.errorDuplicate);
-    return;
-  }
+      ErrorDialog.showErrorDialog(context, RetoCopys.errorDuplicate);
+      return;
+    }
     FormValidationHelper.validateAndHandleErrors(
       context: context,
       medicinas: medicinas,
@@ -96,8 +104,8 @@ class _FormMedicineState extends State<FormMedicine> {
                       labelText: RetoCopys.selectMedicine,
                       labelStyle: TextStyle(color: selectedColor),
                       icon: Icon(Icons.menu, color: selectedColor),
-                      enabledBorder: const UnderlineInputBorder(),   
-                      focusedBorder: const UnderlineInputBorder(),
+                      enabledBorder: InputBorder.none,   
+                      focusedBorder: InputBorder.none,
                     ),
                     value: selectedDropdownValue,
                     items: ListMocks.listaDeOpciones.map((name) {
@@ -105,10 +113,8 @@ class _FormMedicineState extends State<FormMedicine> {
                         value: name,
                         enabled: name != ListMocks.listaDeOpciones.first,
                         child: Text(
-                          
                           name, style: name != ListMocks.listaDeOpciones.first
                               ? const TextStyle(fontSize: 20, fontWeight: FontWeight.normal)  // Estilo para el valor seleccionado
-                              
                               : const TextStyle(fontSize: 20, color: Colors.grey),
                         ),
                       );
@@ -151,7 +157,43 @@ class _FormMedicineState extends State<FormMedicine> {
           ),
         ),
         DataTableWidget(personsLst: personsLst, onDelete: onDelete, selectedColor: selectedColor),
+        const SizedBox(height: 20),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RotatingSquare(rotationAnimation: _rotationAnimation, selectedColor: selectedColor),
+                ],
+              ),
+              const SizedBox(height: 20), // Ajusta el espacio entre el texto y el botón
+              Container(
+                margin: const EdgeInsets.only(left: 5),
+                padding: const EdgeInsets.all(5),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    if (_controller.status == AnimationStatus.completed) {
+                      _controller.reverse();
+                    } else {
+                      _controller.forward();
+                    }
+                  },
+                  shape: const CircleBorder(),
+                  backgroundColor: selectedColor,
+                  child: const Icon(Icons.autorenew, color: ColorsMedicine.whiteColor),
+                ), 
+              ),
+            ],
+          ),
+        ),
       ],
     );
+  }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
