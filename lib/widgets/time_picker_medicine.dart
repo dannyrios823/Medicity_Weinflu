@@ -45,7 +45,6 @@ class _TimePickerMedicineState extends State<TimePickerMedicine>{
                   selectedTime = timeOfDay;
                   horaPicker = "${selectedTime.hour}:${selectedTime.minute.toString().padLeft(2, '0')}";
                 });
-                 print(horaPicker);
                 widget.buttonController.value = horaPicker;
                 widget.onTimeSelected(horaPicker);
               }

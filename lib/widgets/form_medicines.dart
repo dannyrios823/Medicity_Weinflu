@@ -114,7 +114,7 @@ class _FormMedicineState extends State<FormMedicine> with SingleTickerProviderSt
                         enabled: name != ListMocks.listaDeOpciones.first,
                         child: Text(
                           name, style: name != ListMocks.listaDeOpciones.first
-                              ? const TextStyle(fontSize: 20, fontWeight: FontWeight.normal)  // Estilo para el valor seleccionado
+                              ? const TextStyle(fontSize: 20, fontWeight: FontWeight.normal)
                               : const TextStyle(fontSize: 20, color: Colors.grey),
                         ),
                       );
@@ -122,7 +122,7 @@ class _FormMedicineState extends State<FormMedicine> with SingleTickerProviderSt
                     onChanged: (String? value) {
                       setState(() {
                         selectedDropdownValue = value ?? ListMocks.listaDeOpciones.first;
-                        medicinas = selectedDropdownValue;  // Actualizamos el valor de medicinas según la selección
+                        medicinas = selectedDropdownValue;
                       });
                     },
                   ),
@@ -168,7 +168,7 @@ class _FormMedicineState extends State<FormMedicine> with SingleTickerProviderSt
                   RotatingSquare(rotationAnimation: _rotationAnimation, selectedColor: selectedColor),
                 ],
               ),
-              const SizedBox(height: 20), // Ajusta el espacio entre el texto y el botón
+              const SizedBox(height: 20),
               Container(
                 margin: const EdgeInsets.only(left: 5),
                 padding: const EdgeInsets.all(5),

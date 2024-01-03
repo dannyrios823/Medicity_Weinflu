@@ -11,11 +11,9 @@ class FormValidationHelper {
     required VoidCallback onValidated,
   }) {
     if (medicinas.isEmpty) {
-      print('Te falta la medicina');
       ErrorDialog.showErrorDialog(context, RetoCopys.errorMedicine);
     } 
     else if (pickerTime.isEmpty) {
-      print('Te falta la hora');
       ErrorDialog.showErrorDialog(context, RetoCopys.errorHour);
     }
     else if (formKey.currentState!.validate()) {
